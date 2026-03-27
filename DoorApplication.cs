@@ -13,10 +13,10 @@ namespace DoorTool
     {
         private static DoorPaletteSet _paletteSet = null;
 
-        // Singleton DoorInserter — chia sẻ giữa palette và command
+      
         internal static readonly DoorInserter Inserter = new DoorInserter();
 
-        // ── IExtensionApplication ─────────────────────────────────────────────
+        
 
         public void Initialize()
         {
@@ -33,7 +33,7 @@ namespace DoorTool
 
         public void Terminate() { }
 
-        // ── Tạo palette sau khi AutoCAD khởi động xong ────────────────────────
+    
 
         private static bool _initialized = false;
         private static void OnFirstIdle(object sender, EventArgs e)
@@ -53,7 +53,7 @@ namespace DoorTool
             }
         }
 
-        // ── Commands ──────────────────────────────────────────────────────────
+     
 
         [CommandMethod("DOORPANEL", CommandFlags.Modal)]
         public void TogglePalette()
@@ -79,4 +79,4 @@ namespace DoorTool
             Inserter.Execute();
         }
     }
-}
+}
