@@ -1,0 +1,14 @@
+D:\file\DoorTool\obj\Debug\net48\DoorTool.csproj.AssemblyReference.cache
+D:\file\DoorTool\obj\Debug\net48\Views\DoorPaletteView.g.cs
+D:\file\DoorTool\obj\Debug\net48\DoorTool_MarkupCompile.cache
+D:\file\DoorTool\obj\Debug\net48\DoorTool_MarkupCompile.lref
+D:\file\DoorTool\bin\Debug\net48\DoorTool.dll
+D:\file\DoorTool\bin\Debug\net48\DoorTool.pdb
+D:\file\DoorTool\obj\Debug\net48\Views\DoorPaletteView.baml
+D:\file\DoorTool\obj\Debug\net48\DoorTool.g.resources
+D:\file\DoorTool\obj\Debug\net48\DoorTool.GeneratedMSBuildEditorConfig.editorconfig
+D:\file\DoorTool\obj\Debug\net48\DoorTool.AssemblyInfoInputs.cache
+D:\file\DoorTool\obj\Debug\net48\DoorTool.AssemblyInfo.cs
+D:\file\DoorTool\obj\Debug\net48\DoorTool.csproj.CoreCompileInputs.cache
+D:\file\DoorTool\obj\Debug\net48\DoorTool.dll
+D:\file\DoorTool\obj\Debug\net48\DoorTool.pdb

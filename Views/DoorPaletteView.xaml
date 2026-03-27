@@ -1,0 +1,237 @@
+<UserControl
+    x:Class="DoorTool.Views.DoorPaletteView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="clr-namespace:DoorTool.Models"
+    Background="#F5F5F5"
+    MinWidth="200">
+
+    <UserControl.Resources>
+
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
+        <!-- ══ Màu ══════════════════════════════════════════════════════════ -->
+        <SolidColorBrush x:Key="TileBg"      Color="#E8E8E8"/>
+        <SolidColorBrush x:Key="TileBorder"  Color="#CCCCCC"/>
+        <SolidColorBrush x:Key="TileHover"   Color="#D5D5D5"/>
+        <SolidColorBrush x:Key="TilePressed" Color="#BEBEBE"/>
+        <SolidColorBrush x:Key="IconStroke"  Color="#3A3A3A"/>
+
+        <!-- ══ Tile button style ═════════════════════════════════════════════ -->
+        <Style x:Key="TileStyle" TargetType="Button">
+            <Setter Property="Background"      Value="{StaticResource TileBg}"/>
+            <Setter Property="BorderBrush"     Value="{StaticResource TileBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height"          Value="80"/>
+            <Setter Property="Margin"          Value="8,4"/>
+            <Setter Property="Cursor"          Value="Hand"/>
+            <!-- Binding Command từ DoorTileViewModel -->
+            <Setter Property="Command"
+                    Value="{Binding InsertCommand}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="3">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background"
+                                        Value="{StaticResource TileHover}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background"
+                                        Value="{StaticResource TilePressed}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ══ Icons (DataTemplate) ═════════════════════════════════════════ -->
+        <DataTemplate x:Key="IconSingle">
+            <Viewbox Width="30" Height="34">
+                <Canvas Width="24" Height="28">
+                    <Rectangle Canvas.Left="0" Canvas.Top="0" Width="24" Height="28"
+                               Stroke="{StaticResource IconStroke}"
+                               StrokeThickness="1.5" Fill="Transparent"/>
+                    <Rectangle Canvas.Left="2" Canvas.Top="2" Width="20" Height="24"
+                               Stroke="{StaticResource IconStroke}"
+                               StrokeThickness="1" Fill="#DCDCDC"/>
+                    <Ellipse Canvas.Left="17" Canvas.Top="12" Width="3" Height="3"
+                             Fill="{StaticResource IconStroke}"/>
+                </Canvas>
+            </Viewbox>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IconDouble">
+            <Viewbox Width="30" Height="34">
+                <Canvas Width="24" Height="28">
+                    <Rectangle Canvas.Left="0" Canvas.Top="0" Width="24" Height="28"
+                               Stroke="{StaticResource IconStroke}"
+                               StrokeThickness="1.5" Fill="Transparent"/>
+                    <Rectangle Canvas.Left="2"  Canvas.Top="2" Width="9" Height="24"
+                               Stroke="{StaticResource IconStroke}"
+                               StrokeThickness="1" Fill="#DCDCDC"/>
+                    <Rectangle Canvas.Left="13" Canvas.Top="2" Width="9" Height="24"
+                               Stroke="{StaticResource IconStroke}"
+                               StrokeThickness="1" Fill="#DCDCDC"/>
+                    <Ellipse Canvas.Left="8"  Canvas.Top="12" Width="2.5" Height="2.5"
+                             Fill="{StaticResource IconStroke}"/>
+                    <Ellipse Canvas.Left="13" Canvas.Top="12" Width="2.5" Height="2.5"
+                             Fill="{StaticResource IconStroke}"/>
+                </Canvas>
+            </Viewbox>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IconSliding">
+            <Viewbox Width="30" Height="34">
+                <Canvas Width="24" Height="28">
+                    <Rectangle Canvas.Left="0" Canvas.Top="0" Width="24" Height="28"
+                               Stroke="{StaticResource IconStroke}"
+                               StrokeThickness="1.5" Fill="Transparent"/>
+                    <Rectangle Canvas.Left="5" Canvas.Top="2" Width="17" Height="24"
+                               Stroke="{StaticResource IconStroke}"
+                               StrokeThickness="1" Fill="#DCDCDC"/>
+                    <!-- Mũi tên lùa -->
+                    <Line Canvas.Left="1" Canvas.Top="13"
+                          X1="0" Y1="1" X2="3" Y2="1"
+                          Stroke="{StaticResource IconStroke}" StrokeThickness="1"/>
+                    <Polyline Canvas.Left="1" Canvas.Top="11"
+                              Points="0,3 2,0 2,6"
+                              Stroke="{StaticResource IconStroke}"
+                              StrokeThickness="1" Fill="#3A3A3A"/>
+                </Canvas>
+            </Viewbox>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IconUnknown">
+            <Viewbox Width="30" Height="34">
+                <Canvas Width="24" Height="28">
+                    <Rectangle Canvas.Left="0" Canvas.Top="0" Width="24" Height="28"
+                               Stroke="{StaticResource IconStroke}"
+                               StrokeThickness="1.5" Fill="Transparent"/>
+                    <Rectangle Canvas.Left="2" Canvas.Top="2" Width="20" Height="24"
+                               Stroke="{StaticResource IconStroke}"
+                               StrokeThickness="1" Fill="#DCDCDC"/>
+                </Canvas>
+            </Viewbox>
+        </DataTemplate>
+
+        <!-- ══ DataTemplate cho mỗi DoorTileViewModel ═══════════════════════ -->
+        <DataTemplate x:Key="TileTemplate">
+            <Button Style="{StaticResource TileStyle}">
+                <StackPanel
+                    Orientation="Vertical"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+                    <!-- Icon — ContentControl, triggers bên dưới override template -->
+                    <ContentControl
+                        x:Name="IconPresenter"
+                        Margin="0,6,0,2"
+                        ContentTemplate="{StaticResource IconUnknown}"/>
+
+                    <!-- Tên block -->
+                    <TextBlock
+                        Text="{Binding DisplayName}"
+                        HorizontalAlignment="Center"
+                        FontSize="12"
+                        FontFamily="Segoe UI"
+                        Foreground="#2A2A2A"
+                        Margin="0,0,0,8"/>
+                </StackPanel>
+
+            </Button>
+
+            <!-- Triggers thay icon theo DoorType -->
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding DoorType}"
+                             Value="{x:Static models:DoorType.Single}">
+                    <Setter TargetName="IconPresenter"
+                            Property="ContentTemplate"
+                            Value="{StaticResource IconSingle}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding DoorType}"
+                             Value="{x:Static models:DoorType.Double}">
+                    <Setter TargetName="IconPresenter"
+                            Property="ContentTemplate"
+                            Value="{StaticResource IconDouble}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding DoorType}"
+                             Value="{x:Static models:DoorType.Sliding}">
+                    <Setter TargetName="IconPresenter"
+                            Property="ContentTemplate"
+                            Value="{StaticResource IconSliding}"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <!-- ══ Layout chính ══════════════════════════════════════════════════════ -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Loading overlay -->
+        <Grid Grid.Row="0"
+              Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}"
+              Panel.ZIndex="10"
+              Background="#88FFFFFF">
+            <TextBlock Text="Đang tải..."
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontFamily="Segoe UI" FontSize="11"
+                       Foreground="#555"/>
+        </Grid>
+
+        <!-- Danh sách tile — binding tới Tiles trên ViewModel -->
+        <ScrollViewer Grid.Row="0"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl
+                ItemsSource="{Binding Tiles}"
+                ItemTemplate="{StaticResource TileTemplate}"
+                Margin="0,6,0,0"/>
+        </ScrollViewer>
+
+        <!-- Thanh trạng thái -->
+        <Border Grid.Row="1"
+                BorderBrush="#CCCCCC" BorderThickness="0,1,0,0"
+                Background="#EDEDED" Padding="8,4">
+            <Grid>
+                <!-- StatusText binding từ ViewModel -->
+                <TextBlock
+                    Text="{Binding StatusText}"
+                    FontSize="10" FontFamily="Segoe UI"
+                    Foreground="#555555"
+                    VerticalAlignment="Center"/>
+
+                <!-- Refresh button — Command binding -->
+                <Button
+                    HorizontalAlignment="Right"
+                    Width="22" Height="18"
+                    FontSize="12"
+                    ToolTip="Tải lại danh sách block"
+                    Command="{Binding RefreshCommand}"
+                    Content="↺"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Cursor="Hand"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
